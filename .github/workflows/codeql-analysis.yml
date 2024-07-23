@@ -3,10 +3,10 @@ name: CodeQL
 on:
   pull_request:
     branches:
-      - main
+      - master
   push:
     branches:
-      - main
+      - master
   schedule:
     - cron: '31 7 * * 3'
 
@@ -20,29 +20,23 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
         language:
           - TypeScript
-
     steps:
-      - name: Checkout
-        id: checkout
+      - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v4
-
       - name: Initialize CodeQL
         id: initialize
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
           source-root: src
-
-      - name: Autobuild
+      - name: 👷 Autobuild
         id: autobuild
         uses: github/codeql-action/autobuild@v3
-
       - name: Perform CodeQL Analysis
         id: analyze
         uses: github/codeql-action/analyze@v3

@@ -30,30 +30,19 @@ follow the below instructions:
 After you've cloned the repository to your local machine or codespace, you'll
 need to perform some initial setup steps before you can develop your action.
 
-> [!NOTE]
->
-> You'll need to have a reasonably modern version of
-> [Node.js](https://nodejs.org) handy (20.x or later should work!). If you are
-> using a version manager like [`nodenv`](https://github.com/nodenv/nodenv) or
-> [`nvm`](https://github.com/nvm-sh/nvm), this template has a `.node-version`
-> file at the root of the repository that will be used to automatically switch
-> to the correct version when you `cd` into the repository. Additionally, this
-> `.node-version` file is used by GitHub Actions in any `actions/setup-node`
-> actions.
-
 1. :hammer_and_wrench: Install the dependencies
 
    ```bash
    npm install
    ```
 
-1. :building_construction: Package the TypeScript for distribution
+2. :building_construction: Package the TypeScript for distribution
 
    ```bash
    npm run bundle
    ```
 
-1. :white_check_mark: Run the tests
+3. :white_check_mark: Run the tests
 
    ```bash
    $ npm test
@@ -111,7 +100,9 @@ So, what are you waiting for? Go ahead and start customizing your action!
    ```
 
 1. Replace the contents of `src/` with your action code
+
 1. Add tests to `__tests__/` for your source code
+
 1. Format, test, and build the action
 
    ```bash
@@ -139,6 +130,7 @@ So, what are you waiting for? Go ahead and start customizing your action!
    ```
 
 1. Create a pull request and get feedback on your action
+
 1. Merge the pull request into the `main` branch
 
 Your action is now published! :rocket:

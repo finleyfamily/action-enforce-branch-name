@@ -1,0 +1,14 @@
+{
+    "recommendations": [
+        "DavidAnson.vscode-markdownlint",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "editorconfig.editorconfig",
+        "lextudio.restructuredtext",
+        "redhat.vscode-yaml",
+        "streetsidesoftware.code-spell-checker",
+        "tamasfe.even-better-toml",
+        "github.vscode-github-actions",
+        "rvest.vs-code-prettier-eslint"
+    ]
+}
