@@ -8,6 +8,9 @@ on:
     branches:
       - master
 
+env:
+  NODE_VERSION: '20'
+
 permissions:
   contents: read
   packages: read
@@ -15,28 +18,36 @@ permissions:
 
 jobs:
   lint:
-    name: Lint Codebase
+    name: Lint
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        id: checkout
+      - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Setup Node.js
-        id: setup-node
+      - name: 🏗 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version-file: .node-version
-          cache: npm
+          node-version: ${{ env.NODE_VERSION }}
+      - name: ⤵️ Install Node Dependencies
+        run: |
+          if [[ -f "Makefile" ]]; then
+            MAKEFILE_LIST="$(make -rpn | sed -n -e '/^$/ { n ; /^[^ .#][^ ]*:/ { s/:.*$// ; p ; } ; }')"
+          fi
 
-      - name: Install Dependencies
-        id: install
-        run: npm ci
-
-      - name: Lint Codebase
+          if [[ -f "Makefile" ]] && [[ " ${MAKEFILE_LIST[*]} " =~ setup-npm ]]; then
+            echo "installing node dependencies using Makefile...";
+            make setup-npm;
+          elif [[ -f "package-lock.json" ]]; then
+            echo "installing node dependencies using pipeline";
+            npm ci;
+          else
+            red="\e[31m";
+            end_color="\e[0m";
+            echo "${red}lockfile missing - can't install dependencies${end_color}";
+            exit 9;
+          fi
+      - name: 🚀 Run Linters
         id: super-linter
         uses: super-linter/super-linter/slim@v6
         env:
