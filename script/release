@@ -29,8 +29,8 @@ latest_tag=$(git describe --tags "$(git rev-list --tags --max-count=1)")
 
 if [[ -z "$latest_tag" ]]; then
   # There are no existing release tags
-  +  echo -e "No tags found (yet) - Continue to create and push your first tag"
-  +  latest_tag="[unknown]"
+  echo -e "No tags found (yet) - Continue to create and push your first tag"
+  latest_tag="[unknown]"
 fi
 
 # Display the latest release tag
