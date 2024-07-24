@@ -53,7 +53,7 @@ export async function run(): Promise<void> {
 
   try {
     core.info(`Event name: ${github.context.eventName}`)
-    if (validEvent.includes(github.context.eventName)) {
+    if (!validEvent.includes(github.context.eventName)) {
       core.setFailed(`Invalid event: ${github.context.eventName}`)
       return
     }

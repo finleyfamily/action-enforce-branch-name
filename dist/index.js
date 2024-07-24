@@ -29262,7 +29262,7 @@ async function run() {
     core.info(`Regex: ${regexInput}`);
     try {
         core.info(`Event name: ${github.context.eventName}`);
-        if (validEvent.includes(github.context.eventName)) {
+        if (!validEvent.includes(github.context.eventName)) {
             core.setFailed(`Invalid event: ${github.context.eventName}`);
             return;
         }

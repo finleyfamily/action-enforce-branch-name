@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v4
-      - name: 🤖 Enforce Branch Name
+      - name: 💂 Enforce Branch Name
         uses: ./
         with:
           allowed_prefixes: >-
