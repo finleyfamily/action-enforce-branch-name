@@ -1,4 +1,5 @@
 **/*.json
+**/*.md
 **/*.yaml
 **/*.yml
 **/.venv/

@@ -15,37 +15,9 @@ permissions:
 jobs:
   spellcheck:
     name: spellcheck
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⤵️ Check out code from GitHub
-        uses: actions/checkout@v4
-      - name: 🏗 Setup Node
-        uses: actions/setup-node@v4
-        with:
-          cache: npm
-          node-version: ${{ env.NODE_VERSION }}
-      - name: ⤵️ Install Node Dependencies
-        run: |
-          if [[ -f "Makefile" ]]; then
-            MAKEFILE_LIST="$(make -rpn | sed -n -e '/^$/ { n ; /^[^ .#][^ ]*:/ { s/:.*$// ; p ; } ; }')"
-          fi
-
-          if [[ -f "Makefile" ]] && [[ " ${MAKEFILE_LIST[*]} " =~ setup-npm ]]; then
-            echo "installing node dependencies using Makefile...";
-            make setup-npm;
-          elif [[ -f "package-lock.json" ]]; then
-            echo "installing node dependencies using pipeline";
-            npm ci;
-          else
-            red="\e[31m";
-            end_color="\e[0m";
-            echo "${red}lockfile missing - can't install dependencies${end_color}";
-            exit 9;
-          fi
-      - name: 🚀 Run spellcheck
-        uses: streetsidesoftware/cspell-action@v6
-        with:
-          check_dot_files: 'true'
+    uses: finleyfamily/workflows/.github/workflows/spellcheck.yml@master
+    with:
+      node-version: '20'
   test-typescript:
     name: TypeScript Tests
     runs-on: ubuntu-latest
