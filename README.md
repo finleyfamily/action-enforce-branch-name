@@ -11,6 +11,10 @@
 GitHub Action to enforce a branch naming convention.
 Inspired by [deepakputhraya/action-branch-name](https://github.com/deepakputhraya/action-branch-name).
 
+> [!IMPORTANT]
+> JavaScript/TypeScript is not my forte.
+> Contributions are welcome and appreciated but I will likely be of little help with any issues encountered when doing so.
+
 **Table Of Contents** <!-- markdownlint-disable-line MD036 -->
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=6 --minlevel=2 -->
