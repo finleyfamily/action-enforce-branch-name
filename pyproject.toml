@@ -2,7 +2,7 @@
 name = "action-enforce-branch-name"
 version = "0.0.0"
 authors = ["Kyle Finley <kyle@finley.sh>"]
-description = "Github Action to enforce naming convention."
+description = "GitHub Action to enforce a branch naming convention."
 homepage = "https://github.com/finleyfamily/action-enforce-branch-name"
 package-mode = false
 repository = "https://github.com/finleyfamily/action-enforce-branch-name"

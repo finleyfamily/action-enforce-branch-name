@@ -16,4 +16,3 @@ jobs:
           allowed_prefixes: >-
             bugfix,chore,dependabot,docs,feat,feature,fix,hotfix,
             maint,maintain,maintenance,release,renovate
-          exclude: master,pre-commit-ci-update-config

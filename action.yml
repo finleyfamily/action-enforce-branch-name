@@ -1,5 +1,5 @@
 name: Enforce Branch Name
-description: Github Action to enforce naming convention
+description: GitHub Action to enforce a branch naming convention.
 author: Kyle Finley
 branding:
   color: purple
@@ -8,15 +8,15 @@ branding:
 inputs:
   allowed_prefixes:
     default: ''
-    description: Comma delimited list of prefix that must be used in every branch. (e.g. feature,hotfix)
+    description: Comma delimited list of prefix that must be used in every branch (e.g. `feature,hotfix``).
     required: false
   exclude:
     default: main,master,pre-commit-ci-update-config
-    description: Comma delimited list of branch names to exclude from this check. (e.g. main,master)
+    description: Comma delimited list of branch names to exclude from this check (e.g. `main,master``).
     required: false
   regex:
     default: '([a-z])+\/([a-zA-Z0-9\-\_])+'
-    description: Regex to validate the branch name.
+    description: Regex pattern to validate the branch name.
     required: false
 
 runs:
