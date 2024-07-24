@@ -38,16 +38,18 @@ function getBranchName(ctx: Context): string {
  */
 export async function run(): Promise<void> {
   const allowedPrefixesInput: string = core.getInput('allowed_prefixes')
-  const excludeInput: string = core.getInput('ignore')
+  const excludeInput: string = core.getInput('exclude')
   const regexInput: string = core.getInput('regex')
 
-  const allowedPrefixList: string[] = allowedPrefixesInput.split(',')
+  const allowedPrefixList: string[] = allowedPrefixesInput
+    .split(',')
+    .map((item: string): string => item.trim())
   const excludeList: string[] = excludeInput
     .split(',')
     .map((item: string): string => item.trim())
   const regexPattern = RegExp(regexInput)
 
-  core.info(`Allowed Prefixes: ${allowedPrefixList.join('')}`)
+  core.info(`Allowed Prefixes: ${allowedPrefixList.join(', ')}`)
   core.info(`Exclude list: ${excludeList.join(', ')}`)
   core.info(`Regex: ${regexInput}`)
 

@@ -29250,14 +29250,16 @@ function getBranchName(ctx) {
  */
 async function run() {
     const allowedPrefixesInput = core.getInput('allowed_prefixes');
-    const excludeInput = core.getInput('ignore');
+    const excludeInput = core.getInput('exclude');
     const regexInput = core.getInput('regex');
-    const allowedPrefixList = allowedPrefixesInput.split(',');
+    const allowedPrefixList = allowedPrefixesInput
+        .split(',')
+        .map((item) => item.trim());
     const excludeList = excludeInput
         .split(',')
         .map((item) => item.trim());
     const regexPattern = RegExp(regexInput);
-    core.info(`Allowed Prefixes: ${allowedPrefixList.join('')}`);
+    core.info(`Allowed Prefixes: ${allowedPrefixList.join(', ')}`);
     core.info(`Exclude list: ${excludeList.join(', ')}`);
     core.info(`Regex: ${regexInput}`);
     try {
