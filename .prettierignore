@@ -1,3 +1,8 @@
+**/*.json
+**/*.md
+**/*.yaml
+**/*.yml
+**/.venv/
+coverage/
 dist/
 node_modules/
-coverage/

@@ -1,24 +1,24 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
-
-# Add your action's branding here. This will appear on the GitHub Marketplace.
+name: Enforce Branch Name
+description: GitHub Action to enforce a branch naming convention.
+author: Kyle Finley
 branding:
-  icon: 'heart'
-  color: 'red'
+  color: purple
+  icon: cloud-lightning
 
-# Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
-    required: true
-    default: '1000'
-
-# Define your outputs here.
-outputs:
-  time:
-    description: 'Your output description here'
+  allowed_prefixes:
+    default: ''
+    description: Comma delimited list of prefix that must be used in every branch (e.g. `feature,hotfix``).
+    required: false
+  exclude:
+    default: main,master,pre-commit-ci-update-config
+    description: Comma delimited list of branch names to exclude from this check (e.g. `main,master``).
+    required: false
+  regex:
+    default: '([a-z])+\/([a-zA-Z0-9\-\_])+'
+    description: Regex pattern to validate the branch name.
+    required: false
 
 runs:
-  using: node20
   main: dist/index.js
+  using: node20

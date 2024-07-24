@@ -2,63 +2,57 @@ name: Continuous Integration
 
 on:
   pull_request:
-    branches:
-      - main
   push:
     branches:
-      - main
+      - master
+
+env:
+  NODE_VERSION: '20'
 
 permissions:
   contents: read
 
 jobs:
+  spellcheck:
+    name: spellcheck
+    uses: finleyfamily/workflows/.github/workflows/spellcheck.yml@master
+    with:
+      node-version: '20'
   test-typescript:
     name: TypeScript Tests
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        id: checkout
+      - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        id: setup-node
+      - name: 🏗 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version-file: .node-version
           cache: npm
+          node-version: ${{ env.NODE_VERSION }}
+      - name: ⤵️ Install Node Dependencies
+        run: |
+          if [[ -f "Makefile" ]]; then
+            MAKEFILE_LIST="$(make -rpn | sed -n -e '/^$/ { n ; /^[^ .#][^ ]*:/ { s/:.*$// ; p ; } ; }')"
+          fi
 
-      - name: Install Dependencies
-        id: npm-ci
-        run: npm ci
-
+          if [[ -f "Makefile" ]] && [[ " ${MAKEFILE_LIST[*]} " =~ setup-npm ]]; then
+            echo "installing node dependencies using Makefile...";
+            make setup-npm;
+          elif [[ -f "package-lock.json" ]]; then
+            echo "installing node dependencies using pipeline";
+            npm ci;
+          else
+            red="\e[31m";
+            end_color="\e[0m";
+            echo "${red}lockfile missing - can't install dependencies${end_color}";
+            exit 9;
+          fi
       - name: Check Format
         id: npm-format-check
         run: npm run format:check
-
       - name: Lint
         id: npm-lint
         run: npm run lint
-
       - name: Test
         id: npm-ci-test
         run: npm run ci-test
-
-  test-action:
-    name: GitHub Actions Test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-
-      - name: Test Local Action
-        id: test-action
-        uses: ./
-        with:
-          milliseconds: 2000
-
-      - name: Print Output
-        id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
