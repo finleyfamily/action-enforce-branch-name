@@ -5,18 +5,20 @@ branding:
   color: purple
   icon: cloud-lightning
 
-# Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
-    required: true
-    default: '1000'
-
-# Define your outputs here.
-outputs:
-  time:
-    description: 'Your output description here'
+  allowed_prefixes:
+    default: ''
+    description: Comma delimited list of prefix that must be used in every branch. (e.g. feature,hotfix)
+    required: false
+  exclude:
+    default: main,master,pre-commit-ci-update-config
+    description: Comma delimited list of branch names to exclude from this check. (e.g. main,master)
+    required: false
+  regex:
+    default: '([a-z])+\/([a-zA-Z0-9\-\_])+'
+    description: Regex to validate the branch name.
+    required: false
 
 runs:
-  using: node20
   main: dist/index.js
+  using: node20

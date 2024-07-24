@@ -19,6 +19,11 @@ jobs:
     steps:
       - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v4
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version: ${{ env.NODE_VERSION }}
       - name: ⤵️ Install Node Dependencies
         run: |
           if [[ -f "Makefile" ]]; then
@@ -39,6 +44,8 @@ jobs:
           fi
       - name: 🚀 Run spellcheck
         uses: streetsidesoftware/cspell-action@v6
+        with:
+          check_dot_files: 'true'
   test-typescript:
     name: TypeScript Tests
     runs-on: ubuntu-latest

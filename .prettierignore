@@ -1,6 +1,7 @@
 **/*.json
 **/*.yaml
 **/*.yml
+**/.venv/
 coverage/
 dist/
 node_modules/

@@ -11,8 +11,21 @@ help: ## show this message
 		'BEGIN {FS = ":.*##"; printf "\nUsage: make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-30s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) }' \
 		$(MAKEFILE_LIST)
 
-lint: ## run all linters
-	@echo "no linters configured for this project"
+build: ## build action
+	@npm run-script bundle
+
+fix: fix-prettier run-pre-commit ## run all automatic fixes
+
+fix-prettier: ## run prettier
+	@npm run-script format:write
+
+lint: lint-prettier lint-eslint ## run all linters
+
+lint-eslint: ## run eslint
+	@npm run-script lint
+
+lint-prettier: ## run prettier (check only)
+	@npm run-script format:check
 
 run-pre-commit: ## run pre-commit for all files
 	@poetry run pre-commit run $(PRE_COMMIT_OPTS) \
@@ -47,4 +60,5 @@ spellcheck: ## run cspell
 		--show-context
 
 test: ## run tests
-	@echo "no tests configured for this project"
+	@npm run-script test
+	@npm run-script coverage
