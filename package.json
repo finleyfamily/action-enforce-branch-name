@@ -13,7 +13,7 @@
     "@jest/globals": "^29.7.0",
     "@octokit/webhooks-types": "^7.5.1",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.14.11",
+    "@types/node": "^20.14.12",
     "@typescript-eslint/eslint-plugin": "^7.17.0",
     "@typescript-eslint/parser": "^7.17.0",
     "@vercel/ncc": "^0.38.1",
@@ -33,7 +33,7 @@
     "typescript": "^5.5.4"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20.16.0"
   },
   "exports": {
     ".": "./dist/index.js"
