@@ -3,6 +3,9 @@ import * as github from '@actions/github'
 import { PullRequestEvent } from '@octokit/webhooks-types'
 import { Context } from '@actions/github/lib/context'
 
+const styleBold = '\u001b[1m'
+const styleReset = '\u001b[0m'
+
 const validEvent: string[] = [
   'create',
   'push',
@@ -49,19 +52,23 @@ export async function run(): Promise<void> {
     .map((item: string): string => item.trim())
   const regexPattern = RegExp(regexInput)
 
-  core.info(`Allowed Prefixes: ${allowedPrefixList.join(', ')}`)
-  core.info(`Exclude list: ${excludeList.join(', ')}`)
-  core.info(`Regex: ${regexInput}`)
+  core.info(
+    `${styleBold}Allowed Prefixes:${styleReset} ${allowedPrefixList.join(', ')}`
+  )
+  core.info(`${styleBold}Exclude list:${styleReset} ${excludeList.join(', ')}`)
+  core.info(`${styleBold}Regex:${styleReset} ${regexInput}`)
 
   try {
-    core.info(`Event name: ${github.context.eventName}`)
+    core.info(
+      `${styleBold}Event name:${styleReset} ${github.context.eventName}`
+    )
     if (!validEvent.includes(github.context.eventName)) {
       core.setFailed(`Invalid event: ${github.context.eventName}`)
       return
     }
 
     const branchName = getBranchName(github.context)
-    core.info(`Branch name: ${branchName}`)
+    core.info(`${styleBold}Branch name:${styleReset} ${branchName}`)
 
     // check against exclude list
     if (

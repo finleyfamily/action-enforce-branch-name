@@ -29220,6 +29220,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = run;
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
+const styleBold = '\u001b[1m';
+const styleReset = '\u001b[0m';
 const validEvent = [
     'create',
     'push',
@@ -29259,17 +29261,17 @@ async function run() {
         .split(',')
         .map((item) => item.trim());
     const regexPattern = RegExp(regexInput);
-    core.info(`Allowed Prefixes: ${allowedPrefixList.join(', ')}`);
-    core.info(`Exclude list: ${excludeList.join(', ')}`);
-    core.info(`Regex: ${regexInput}`);
+    core.info(`${styleBold}Allowed Prefixes:${styleReset} ${allowedPrefixList.join(', ')}`);
+    core.info(`${styleBold}Exclude list:${styleReset} ${excludeList.join(', ')}`);
+    core.info(`${styleBold}Regex:${styleReset} ${regexInput}`);
     try {
-        core.info(`Event name: ${github.context.eventName}`);
+        core.info(`${styleBold}Event name:${styleReset} ${github.context.eventName}`);
         if (!validEvent.includes(github.context.eventName)) {
             core.setFailed(`Invalid event: ${github.context.eventName}`);
             return;
         }
         const branchName = getBranchName(github.context);
-        core.info(`Branch name: ${branchName}`);
+        core.info(`${styleBold}Branch name:${styleReset} ${branchName}`);
         // check against exclude list
         if (excludeList.length > 0 &&
             excludeList.some((el) => branchName === el)) {
