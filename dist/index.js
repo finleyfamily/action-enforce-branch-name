@@ -29228,12 +29228,42 @@ const validEvent = [
     'pull_request',
     'pull_request_target'
 ];
+/**
+ * Error raised when the event that triggered the action `create` but the ref type
+ * is not a branch.
+ *
+ * @class CreateNotBranchError
+ * @extends {Error}
+ */
+class CreateNotBranchError extends Error {
+    constructor(message, options) {
+        super(message, options);
+        this.name = 'CreateNotBranchError';
+    }
+}
+/**
+ * Error raised when something is not implemented.
+ *
+ * @class NotImplementedError
+ * @extends {Error}
+ */
+class NotImplementedError extends Error {
+    constructor(message, options) {
+        super(message, options);
+        this.name = 'NotImplementedError';
+    }
+}
+/**
+ * Get the branch name.
+ *
+ * @returns {string} Name of the branch.
+ */
 function getBranchName(ctx) {
     let payload;
     switch (ctx.eventName) {
         case 'create':
             if (ctx.payload.ref_type !== 'branch') {
-                throw new Error(`ref_type must be "branch" but got ${ctx.payload.ref_type}`);
+                throw new CreateNotBranchError(`ref_type must be "branch" but got ${ctx.payload.ref_type}`);
             }
             return ctx.ref.replace('refs/heads/', '');
         case 'pull_request_target':
@@ -29243,12 +29273,14 @@ function getBranchName(ctx) {
         case 'push':
             return ctx.ref.replace('refs/heads/', '');
         default:
-            throw new Error(`Invalid event name: ${ctx.eventName}`);
+            throw new NotImplementedError(`Invalid event name: ${ctx.eventName}`);
     }
 }
 /**
  * The main function for the action.
- * @returns {Promise<void>} Resolves when the action is complete.
+ *
+ * @export
+ * @return {Promise<void>}
  */
 async function run() {
     const allowedPrefixesInput = core.getInput('allowed_prefixes');
@@ -29292,6 +29324,10 @@ async function run() {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (error) {
+        if (error instanceof CreateNotBranchError) {
+            core.info(`${github.context.eventName} event with ref_type ${github.context.payload.ref_type} isn't a branch`);
+            return;
+        }
         let message = 'Unknown Error';
         if (error instanceof Error)
             message = error.message;
