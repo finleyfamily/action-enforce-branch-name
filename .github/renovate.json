@@ -3,6 +3,34 @@
     "extends": [
         "github>finleyfamily/renovate"
     ],
+    "packageRules": [
+        {
+            "extends": [
+                "monorepo:eslint",
+                "monorepo:typescript-eslint"
+            ],
+            "groupName": "eslint",
+            "matchPackageNames": [
+                "/^eslint-.*/"
+            ]
+        },
+        {
+            "extends": [
+                "monorepo:jest"
+            ],
+            "groupName": "jest",
+            "matchPackageNames": [
+                "@types/jest",
+                "ts-jest"
+            ]
+        },
+        {
+            "groupName": "prettier",
+            "matchPackageNames": [
+                "/^prettier-.*/"
+            ]
+        }
+    ],
     "reviewers": [
         "ITProKyle"
     ]
