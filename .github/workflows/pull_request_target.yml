@@ -1,0 +1,9 @@
+name: pull_request_target
+
+on:
+  create:
+  pull_request_target:
+
+jobs:
+  workflows:
+    uses: finleyfamily/workflows/.github/workflows/pull_request_target.yml@master
