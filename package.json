@@ -9,7 +9,7 @@
   },
   "description": "GitHub Action to enforce a branch naming convention.",
   "devDependencies": {
-    "@itprokyle/cspell-dict": "^1.2.6",
+    "@itprokyle/cspell-dict": "^1.2.7",
     "@jest/globals": "^29.7.0",
     "@octokit/webhooks-types": "^7.5.1",
     "@types/jest": "^29.5.12",
