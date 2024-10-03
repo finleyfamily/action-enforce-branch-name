@@ -3,6 +3,11 @@
     "extends": [
         "github>finleyfamily/renovate"
     ],
+    "gitIgnoredAuthors": [
+        "github_actions",
+        "github-actions",
+        "github-actions[bot]"
+    ],
     "packageRules": [
         {
             "extends": [
@@ -29,6 +34,16 @@
             "matchPackageNames": [
                 "/^prettier-.*/"
             ]
+        },
+        {
+            "description": "bump npm dependencies",
+            "matchDepTypes": [
+                "dependencies"
+            ],
+            "matchManagers": [
+                "npm"
+            ],
+            "rangeStrategy": "bump"
         }
     ],
     "reviewers": [

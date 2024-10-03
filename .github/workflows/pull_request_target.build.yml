@@ -1,0 +1,67 @@
+name: pull_request_target (build)
+
+on:
+  pull_request_target:
+
+jobs:
+  build:
+    name: Build 📦
+    if: github.actor == 'renovate[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version: lts/*
+      - name: 🏗 Create app token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.FINLEY_APP_ID }}
+          private-key: ${{ secrets.FINLEY_APP_PRIVATE_KEY }}
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ steps.app-token.outputs.token }}
+      - name: ⤵️ Install Node Dependencies
+        run: |
+          if [[ -f "Makefile" ]]; then
+            MAKEFILE_LIST="$(make -rpn | sed -n -e '/^$/ { n ; /^[^ .#][^ ]*:/ { s/:.*$// ; p ; } ; }')"
+          fi
+
+          if [[ -f "Makefile" ]] && [[ " ${MAKEFILE_LIST[*]} " =~ setup-npm ]]; then
+            echo "installing node dependencies using Makefile...";
+            make setup-npm;
+          elif [[ -f "package-lock.json" ]]; then
+            echo "installing node dependencies using pipeline";
+            npm ci;
+          else
+            red="\e[31m";
+            end_color="\e[0m";
+            echo "${red}lockfile missing - can't install dependencies${end_color}";
+            exit 9;
+          fi
+      - name: 👷 Build
+        run: make build
+      - name: ℹ️ Determine if dist changed
+        id: changes
+        uses: dorny/paths-filter@v3.0.2
+        with:
+          filters: |
+            dist:
+              - dist/**
+      - name: ⤴️ Commit dist changes
+        if: steps.changes.outputs.dist == 'true'
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: update dist
+      - name: ✅ Enable auto-merge
+        if: |
+          steps.changes.outputs.dist == 'true' &&
+          contains( github.event.pull_request.body, '**Automerge**: Enabled' )
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: gh pr merge --auto --squash "${{ github.event.pull_request.html_url }}"
