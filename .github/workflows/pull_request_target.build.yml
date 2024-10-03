@@ -50,9 +50,9 @@ jobs:
         run: |
           if git diff --exit-code; then
             echo "No changes to commit."
-            echo "dist=false" >> $GITHUB_OUTPUT
+            echo "dist=false" >> "$GITHUB_OUTPUT"
           else
-            echo "dist=true" >> $GITHUB_OUTPUT
+            echo "dist=true" >> "$GITHUB_OUTPUT"
           fi
       - name: ⤴️ Commit dist changes
         if: steps.changes.outputs.dist == 'true'
