@@ -9,11 +9,6 @@ jobs:
     if: github.actor == 'renovate[bot]'
     runs-on: ubuntu-latest
     steps:
-      - name: 🏗 Setup Node
-        uses: actions/setup-node@v4
-        with:
-          cache: npm
-          node-version: lts/*
       - name: 🏗 Create app token
         id: app-token
         uses: actions/create-github-app-token@v1
@@ -25,6 +20,11 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ steps.app-token.outputs.token }}
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version: lts/*
       - name: ⤵️ Install Node Dependencies
         run: |
           if [[ -f "Makefile" ]]; then
