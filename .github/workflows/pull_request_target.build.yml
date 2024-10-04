@@ -6,7 +6,9 @@ on:
 jobs:
   build:
     name: Build 📦
-    if: github.event.pull_request.user.name == 'renovate[bot]'
+    if: |
+      github.actor == 'renovate[bot]' ||
+      (github.actor == 'ITProKyle' && startsWith( github.head_ref, 'renovate/' ))
     runs-on: ubuntu-latest
     steps:
       - name: 🏗 Create app token
