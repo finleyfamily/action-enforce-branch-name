@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     name: Build 📦
-    if: github.actor == 'renovate[bot]'
+    if: github.event.pull_request.user.name == 'renovate[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: 🏗 Create app token
