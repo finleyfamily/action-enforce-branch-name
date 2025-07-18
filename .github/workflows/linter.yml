@@ -49,7 +49,7 @@ jobs:
           fi
       - name: 🚀 Run Linters
         id: super-linter
-        uses: super-linter/super-linter/slim@v7.4.0
+        uses: super-linter/super-linter/slim@v8.0.0
         env:
           DEFAULT_BRANCH: master
           FILTER_REGEX_EXCLUDE: dist/**/*|LICENSE|README.md
