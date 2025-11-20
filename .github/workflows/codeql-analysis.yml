@@ -27,7 +27,7 @@ jobs:
           - TypeScript
     steps:
       - name: ⤵️ Check out code from GitHub
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Initialize CodeQL
         id: initialize
         uses: github/codeql-action/init@v4
