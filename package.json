@@ -4,7 +4,7 @@
     "url": "https://github.com/finleyfamily/action-enforce-branch-name/issues"
   },
   "dependencies": {
-    "@actions/core": "^1.11.1",
+    "@actions/core": "^3.0.0",
     "@actions/github": "^6.0.1"
   },
   "description": "GitHub Action to enforce a branch naming convention.",
