@@ -2,7 +2,7 @@ CI := $(if $(CI),yes,no)
 SHELL := /bin/bash
 
 ifeq ($(CI), yes)
-	POETRY_OPTS = "-v"
+	POETRY_OPTS = --ansi -v
 	PRE_COMMIT_OPTS = --show-diff-on-failure --verbose
 endif
 
@@ -14,37 +14,33 @@ help: ## show this message
 build: ## build action
 	@npm run-script bundle
 
-fix: fix-prettier run-pre-commit ## run all automatic fixes
+fix: fix.prettier run.pre-commit ## run all automatic fixes
 
-fix-prettier: ## run prettier
+fix.prettier: ## run prettier
 	@npm run-script format:write
 
-lint: lint-prettier lint-eslint ## run all linters
+lint: lint.prettier lint.eslint ## run all linters
 
-lint-eslint: ## run eslint
+lint.eslint: ## run eslint
 	@npm run-script lint
 
-lint-prettier: ## run prettier (check only)
+lint.prettier: ## run prettier (check only)
 	@npm run-script format:check
 
-run-pre-commit: ## run pre-commit for all files
+run.pre-commit: ## run pre-commit for all files
 	@poetry run pre-commit run $(PRE_COMMIT_OPTS) \
 		--all-files \
 		--color always
 
-setup: setup-poetry setup-pre-commit setup-npm ## setup development environment
+setup: setup.poetry setup.pre-commit setup.npm ## setup development environment
 
-setup-npm: ## install node dependencies with npm
+setup.npm: ## install node dependencies with npm
 	@npm ci
 
-setup-poetry: ## setup python virtual environment
-	@if [[ -d .venv ]]; then \
-		poetry run python -m pip --version >/dev/null 2>&1 || rm -rf ./.venv/* ./.venv/.*; \
-	fi
-	@poetry check
-	@poetry install $(POETRY_OPTS) --sync
+setup.poetry: ## setup python virtual environment
+	@poetry sync $(POETRY_OPTS)
 
-setup-pre-commit: ## install pre-commit git hooks
+setup.pre-commit: ## install pre-commit git hooks
 	@poetry run pre-commit install
 
 spellcheck: ## run cspell

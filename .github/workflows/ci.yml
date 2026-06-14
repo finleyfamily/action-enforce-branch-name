@@ -33,9 +33,9 @@ jobs:
             MAKEFILE_LIST="$(make -rpn | sed -n -e '/^$/ { n ; /^[^ .#][^ ]*:/ { s/:.*$// ; p ; } ; }')"
           fi
 
-          if [[ -f "Makefile" ]] && [[ " ${MAKEFILE_LIST[*]} " =~ setup-npm ]]; then
+          if [[ -f "Makefile" ]] && [[ " ${MAKEFILE_LIST[*]} " =~ setup.npm ]]; then
             echo "installing node dependencies using Makefile...";
-            make setup-npm;
+            make setup.npm;
           elif [[ -f "package-lock.json" ]]; then
             echo "installing node dependencies using pipeline";
             npm ci;
