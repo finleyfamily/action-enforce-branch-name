@@ -16,8 +16,6 @@ jobs:
   spellcheck:
     name: spellcheck
     uses: finleyfamily/workflows/.github/workflows/spellcheck.yml@master
-    with:
-      node-version: '20'
   test-typescript:
     name: TypeScript Tests
     runs-on: ubuntu-latest
