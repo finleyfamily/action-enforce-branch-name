@@ -1,9 +1,8 @@
 import * as core from '@actions/core'
-import { Context } from '@actions/github/lib/context'
+import { context } from '@actions/github'
 
 const styleBold = '\u001b[1m'
 const styleReset = '\u001b[0m'
-const context = new Context()
 
 interface PullRequestPayload {
   pull_request: {
@@ -52,7 +51,7 @@ class NotImplementedError extends Error {
  *
  * @returns {string} Name of the branch.
  */
-function getBranchName(ctx: Context): string {
+function getBranchName(ctx: typeof context): string {
   switch (ctx.eventName) {
     case 'create':
       if (ctx.payload.ref_type !== 'branch') {
