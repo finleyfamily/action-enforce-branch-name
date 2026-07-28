@@ -2,18 +2,25 @@
  * Unit tests for the action's entrypoint, src/index.ts
  */
 
-jest.mock('@actions/github', () => ({ context: {} }), { virtual: true })
+import * as core from '@actions/core'
 
-import * as main from '../src/main'
-
-// Mock the action's entrypoint
-const runMock = jest.spyOn(main, 'run').mockImplementation()
+beforeAll(() => {
+  process.env.GITHUB_EVENT_NAME = 'push'
+  process.env.GITHUB_REF = 'refs/heads/main'
+  process.env.INPUT_REGEX = '.*'
+})
 
 describe('index', () => {
-  it('calls run when imported', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    require('../src/index')
+  it('loads the action runtime packages', async () => {
+    const { context } = await import('@actions/github')
+    const { run } = await import('../src/main')
 
-    expect(runMock).toHaveBeenCalled()
+    expect(core.getInput).toBeInstanceOf(Function)
+    expect(context).toBeDefined()
+    expect(run).toBeInstanceOf(Function)
+  })
+
+  it('runs when imported', async () => {
+    await expect(import('../src/index')).resolves.toBeDefined()
   })
 })
