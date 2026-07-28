@@ -9,7 +9,7 @@ on:
       - master
 
 env:
-  NODE_VERSION: '20'
+  NODE_VERSION: '26'
 
 permissions:
   contents: read
