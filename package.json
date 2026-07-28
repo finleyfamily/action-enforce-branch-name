@@ -51,11 +51,13 @@
       "text",
       "lcov"
     ],
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
     "moduleFileExtensions": [
       "js",
       "ts"
     ],
-    "preset": "ts-jest",
     "testEnvironment": "node",
     "testMatch": [
       "**/*.test.ts"
@@ -65,7 +67,16 @@
       "/dist/"
     ],
     "transform": {
-      "^.+\\.ts$": "ts-jest"
+      "^.+\\.ts$": [
+        "ts-jest",
+        {
+          "tsconfig": {
+            "module": "ES2022",
+            "target": "ES2022"
+          },
+          "useESM": true
+        }
+      ]
     },
     "verbose": true
   },
@@ -84,14 +95,14 @@
   "scripts": {
     "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package",
     "bundle": "npm run format:write && npm run package",
-    "ci-test": "npx jest",
+    "ci-test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "coverage": "npx make-coverage-badge --output-path ./badges/coverage.svg",
     "format:check": "npx prettier --check .",
     "format:write": "npx prettier --write .",
     "lint": "npx eslint .",
     "package": "npx ncc build src/index.ts -o dist --source-map --license licenses.txt",
     "package:watch": "npm run package -- --watch",
-    "test": "npx jest"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "version": "0.0.0"
 }
