@@ -1,10 +1,17 @@
 import * as core from '@actions/core'
-import * as github from '@actions/github'
-import { PullRequestEvent } from '@octokit/webhooks-types'
 import { Context } from '@actions/github/lib/context'
 
 const styleBold = '\u001b[1m'
 const styleReset = '\u001b[0m'
+const context = new Context()
+
+interface PullRequestPayload {
+  pull_request: {
+    head: {
+      ref: string
+    }
+  }
+}
 
 const validEvent: string[] = [
   'create',
@@ -46,8 +53,6 @@ class NotImplementedError extends Error {
  * @returns {string} Name of the branch.
  */
 function getBranchName(ctx: Context): string {
-  let payload: PullRequestEvent
-
   switch (ctx.eventName) {
     case 'create':
       if (ctx.payload.ref_type !== 'branch') {
@@ -57,9 +62,10 @@ function getBranchName(ctx: Context): string {
       }
       return ctx.ref.replace('refs/heads/', '')
     case 'pull_request_target':
-    case 'pull_request':
-      payload = ctx.payload as PullRequestEvent
+    case 'pull_request': {
+      const payload = ctx.payload as unknown as PullRequestPayload
       return payload.pull_request.head.ref
+    }
     case 'push':
       return ctx.ref.replace('refs/heads/', '')
     default:
@@ -93,15 +99,13 @@ export async function run(): Promise<void> {
   core.info(`${styleBold}Regex:${styleReset} ${regexInput}`)
 
   try {
-    core.info(
-      `${styleBold}Event name:${styleReset} ${github.context.eventName}`
-    )
-    if (!validEvent.includes(github.context.eventName)) {
-      core.setFailed(`Invalid event: ${github.context.eventName}`)
+    core.info(`${styleBold}Event name:${styleReset} ${context.eventName}`)
+    if (!validEvent.includes(context.eventName)) {
+      core.setFailed(`Invalid event: ${context.eventName}`)
       return
     }
 
-    const branchName = getBranchName(github.context)
+    const branchName = getBranchName(context)
     core.info(`${styleBold}Branch name:${styleReset} ${branchName}`)
 
     // check against exclude list
@@ -137,7 +141,7 @@ export async function run(): Promise<void> {
   } catch (error: any) {
     if (error instanceof CreateNotBranchError) {
       core.info(
-        `${github.context.eventName} event with ref_type ${github.context.payload.ref_type} isn't a branch`
+        `${context.eventName} event with ref_type ${context.payload.ref_type} isn't a branch`
       )
       return
     }
