@@ -14,7 +14,7 @@
     "@jest/globals": "^30.5.2",
     "@octokit/webhooks-types": "^7.6.1",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.9.1",
+    "@types/node": "^26.6.5",
     "@typescript-eslint/eslint-plugin": "^8.72.1",
     "@typescript-eslint/parser": "^8.72.1",
     "@vercel/ncc": "^0.45.0",
